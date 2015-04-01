@@ -1,1 +1,1 @@
-# sergis-author2
+# SerGIS Game Engine Author

@@ -1,0 +1,25 @@
+body{
+}
+
+.over {
+  border: solid 5px purple;
+}
+.draggable
+{
+  border: solid 1px black;
+  position: relative;
+  margin-top: 1px;
+  margin-left: 1px;
+  margin-bottom: 1px;
+  margin-right: 1px;
+  min-height: 146px;
+  min-width: 416px;
+}
+
+.drop{
+	position: relative;
+	border: solid 2px;
+	background-color: #EEEEEE;
+	min-height: 150px;
+	min-width: 420px;
+}

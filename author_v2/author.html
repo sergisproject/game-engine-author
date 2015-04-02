@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Draggable - Default functionality</title>
+  <link href="testy.css" rel="stylesheet">
+  <style>
+  </style>
+  
+</head>
+<body>
+		 
+		 <button onclick="addScene()" style="border: none; min-width:50px; min-height:50px">Add Scene</button>
+		 
+		 
+		 
+		<div id="sceneHolder">
+			
+			<div class="draggable" id="scene1">Scene 1
+				<div class="drop" id="s1c1" >
+					</div>
+				</div>
+				<div class="drop" id="s1c2" style="background-color:blue">
+					<textarea></textarea>
+				</div>
+			</div>
+			<div class="draggable" id="scene2">Scene 2
+				<div class="drop" id="s2c1" style="background-color:yellow">
+					<textarea></textarea>
+				</div>
+			</div>
+			<div class="draggable" id="scene3">Scene 3
+				<div class="drop" id="s3c1" style="background-color:red">
+					<textarea></textarea>
+				</div>
+			<div class="drop" id="dropArea">
+			</div>
+			
+		</div>
+ 
+ 		<script src="external/jquery/jquery.js"></script>
+		<script src="jquery-ui.js"></script>
+ 		<script>
+ 	  	$( init );
+		 
+		 	//Makes draggables draggable
+			function init() {
+		  		$('.draggable').draggable();
+		  		$(".droppable").droppable({
+					accept: ".draggable",
+					scope: "drop"
+				});
+			}
+			$(".draggable").draggable({ cursor: "crosshair", revert: "invalid"});
+			$(".drop").droppable({ accept: ".draggable", 
+			           drop: function(event, ui) {
+			                    console.log("drop");
+			                   $(this).removeClass("border").removeClass("over");
+			             var dropped = ui.draggable;
+			            var droppedOn = $(this);
+			            $(dropped).detach().css({top: 0,left: 0}).appendTo(droppedOn);      
+			             
+			             
+			                }, 
+			          over: function(event, elem) {
+			                  $(this).addClass("over");
+			                   console.log("over");
+			          }
+			                ,
+			                  out: function(event, elem) {
+			                    $(this).removeClass("over");
+			                  }
+			                     });
+			$(".drop").sortable();
+			
+			$("#origin").droppable({ accept: ".draggable", drop: function(event, ui) {
+			                   console.log("drop");
+			                   $(this).removeClass("border").removeClass("over");
+			            var dropped = ui.draggable;
+			            var droppedOn = $(this);
+			            $(dropped).detach().css({top: 0,left: 0}).appendTo(droppedOn);      
+			             
+			             
+			                }});
+			                
+			 var sceneArray = [];
+			 var dropArray = [];
+			            
+			 function addScene(){
+			 	var scene = document.createElement("draggable");
+			 	scene.className = "draggable";
+			 	scene.id = "sceneA"+sceneArray.length;
+			 	
+			 	sceneArray[sceneArray.length] = scene;
+			 	
+			 	console.log(scene.id+" added");
+			 	
+			 	Redraw();
+			 }
+			 function removeScene(sceneid){
+			 	sceneArray[sceneid] = null;
+			 	Redraw();
+			 }
+			 
+			 function Redraw(){
+			 	
+			 	adjustDrop();
+			 	
+			 	var holder = document.getElementById("sceneHolder");
+			 	var button = document.createElement("button");
+			 	
+			 	while(holder.firstChild){
+			 		holder.removeChild(holder.firstChild);
+			 	}
+			 	
+			 	for(i=0; i<sceneArray.length; i++){
+			 		
+			 		$(dropArray[i]).offset({top:160 , left: 0}); //styling
+			 		
+			 		dropArray[i].appendChild(sceneArray[i].appendChild(button));
+			 		holder.appendChild(dropArray[i]);
+			 		//holder.appendChild(sceneArray[i]);
+			 	}
+			 	
+			 	init();
+			 	init2();
+			 	
+			 }
+			 
+			 function adjustDrop(){
+			 	if(dropArray.length > sceneArray.length){
+			 		for(i=0; i< dropArray.length; i++){
+			 			if(!dropArray[i].firstChild){
+			 				dropArray[i].parentNode.removeChild(dropArray[i]);
+			 				
+			 				console.log(dropArray[i].id+" removed");
+			 				return;
+			 			}
+			 		}
+			 	}
+			 	else if(dropArray.length < sceneArray.length){
+			 		var dropNode = document.createElement("drop");
+			 		dropNode.className = "drop";
+			 		dropNode.id = "dropA"+dropArray.length;
+			 		dropArray[dropArray.length] = dropNode;
+			 		
+			 		console.log(dropNode.id+" added");
+			 	}
+			 	
+			 }
+			
+		</script>
+ 
+</body>
+</html>
